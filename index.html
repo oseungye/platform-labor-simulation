@@ -48,7 +48,7 @@
     <div class="topbar-left">
       <div class="logo-mark">PL</div>
       <div class="logo-text">
-        <span class="logo-title">PLATFORM LABOR <em>POLICY LAB</em></span>
+        <span class="logo-title">플랫폼 노동 정책 <em>연구소</em></span>
         <span class="logo-sub">플랫폼 노동 정책 시뮬레이터 · 사회과학 탐구 프로젝트</span>
       </div>
     </div>
@@ -68,7 +68,7 @@
     ============================================================= -->
     <section class="view view-intro active" id="view-intro">
       <div class="hero">
-        <div class="hero-tag">SOCIAL SCIENCE SIMULATION · v1.0</div>
+        <div class="hero-tag">사회과학 탐구 · 데이터 시뮬레이션</div>
         <h1 class="hero-title">
           정책이 바뀌면<br />
           <span class="accent">사회는 어떻게 반응할까?</span>
@@ -90,29 +90,29 @@
 
       <!-- 핵심 통계 카드: 플랫폼 노동 현황 -->
       <div class="stat-section">
-        <h2 class="section-label">현황 데이터 · KEY INDICATORS</h2>
+        <h2 class="section-label">현황 데이터</h2>
         <div class="stat-grid">
           <!-- 각 카드의 data-target 값까지 숫자가 카운트업 애니메이션으로 올라감 -->
           <div class="stat-card">
-            <div class="stat-icon">📈</div>
+            
             <div class="stat-num"><span class="count" data-target="38" data-suffix="%">0</span></div>
             <div class="stat-name">배달 노동자 연 증가율</div>
             <div class="stat-note">최근 수년간 가파른 성장세 (예시 데이터)</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon">🧑‍💻</div>
+            
             <div class="stat-num"><span class="count" data-target="8.5" data-suffix="%" data-decimal="1">0</span></div>
             <div class="stat-name">전체 취업자 중 플랫폼 노동 비중</div>
             <div class="stat-note">비정형 노동 형태 확대</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon">⏱️</div>
+            
             <div class="stat-num"><span class="count" data-target="11.2" data-suffix="h" data-decimal="1">0</span></div>
             <div class="stat-name">평균 일일 노동시간</div>
             <div class="stat-note">소득을 위한 장시간 노동 경향</div>
           </div>
           <div class="stat-card">
-            <div class="stat-icon">🛡️</div>
+            
             <div class="stat-num"><span class="count" data-target="42" data-suffix="%">0</span></div>
             <div class="stat-name">사회보험 가입률</div>
             <div class="stat-note">사각지대 존재 (예시 데이터)</div>
@@ -133,7 +133,7 @@
       <!-- 시나리오 프리셋 -->
       <div class="lab-head">
         <div>
-          <h2 class="view-title">정책 실험실 <span class="mono">/ POLICY LAB</span></h2>
+          <h2 class="view-title">정책 실험실</h2>
           <p class="view-sub">정책을 켜고 강도를 조절하면, 8개 사회 지표가 실시간으로 변합니다.</p>
         </div>
         <div class="preset-box">
@@ -175,7 +175,7 @@
             <div class="chart-card">
               <div class="chart-card-head">
                 <h3>적용 전 / 후 비교</h3>
-                <span class="mono">BAR</span>
+                <span class="mono">막대그래프</span>
               </div>
               <canvas id="barChart"></canvas>
             </div>
@@ -183,14 +183,14 @@
               <div class="chart-card">
                 <div class="chart-card-head">
                   <h3>이해관계자 균형</h3>
-                  <span class="mono">RADAR</span>
+                  <span class="mono">레이더</span>
                 </div>
                 <canvas id="radarChart"></canvas>
               </div>
               <div class="chart-card">
                 <div class="chart-card-head">
                   <h3>지표 누적 추이</h3>
-                  <span class="mono">LINE</span>
+                  <span class="mono">추이</span>
                 </div>
                 <canvas id="lineChart"></canvas>
               </div>
@@ -198,7 +198,7 @@
             <div class="chart-card">
               <div class="chart-card-head">
                 <h3>사회적 비용·편익 구성</h3>
-                <span class="mono">DOUGHNUT</span>
+                <span class="mono">구성비</span>
               </div>
               <div class="doughnut-wrap">
                 <canvas id="doughnutChart"></canvas>
@@ -212,7 +212,7 @@
       <div class="analysis-section">
         <div class="analysis-head">
           <div>
-            <h2 class="view-title">정책 분석 <span class="mono">/ POLICY ANALYSIS</span></h2>
+            <h2 class="view-title">정책 분석</h2>
             <p class="view-sub">현재 정책 조합을 평가하고 장단점·부작용·균형 방향을 제안합니다.</p>
           </div>
           <button class="btn btn-primary" id="analyzeBtn">⚙ 정책 분석 실행</button>
@@ -224,14 +224,14 @@
 
       <!-- 사회 반응 시뮬레이션 -->
       <div class="reaction-section">
-        <h2 class="view-title">사회 반응 시뮬레이션 <span class="mono">/ STAKEHOLDER REACTION</span></h2>
+        <h2 class="view-title">사회 반응 시뮬레이션</h2>
         <p class="view-sub">정책 결과에 따라 각 주체가 보일 법한 반응을 보여줍니다.</p>
         <div id="reactionGrid" class="reaction-grid"></div>
       </div>
 
       <!-- 탐구 기록(메모) -->
       <div class="memo-section">
-        <h2 class="view-title">탐구 기록 <span class="mono">/ RESEARCH LOG</span></h2>
+        <h2 class="view-title">탐구 기록</h2>
         <p class="view-sub">실험 결과와 느낀 점을 기록하고, 텍스트로 내보내 보고서에 활용하세요.</p>
         <div class="memo-box">
           <div class="memo-fields">
@@ -262,7 +262,7 @@
          [VIEW 3] 탐구 의의 페이지
     ============================================================= -->
     <section class="view view-study" id="view-study">
-      <h2 class="view-title">탐구의 배경과 의의 <span class="mono">/ RESEARCH CONTEXT</span></h2>
+      <h2 class="view-title">탐구의 배경과 의의</h2>
       <p class="view-sub">이 시뮬레이션이 다루는 사회 문제의 핵심 개념을 정리합니다.</p>
 
       <div class="study-grid">
