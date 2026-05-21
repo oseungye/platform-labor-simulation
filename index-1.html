@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<!--
+=====================================================================
+  플랫폼 노동 정책 시뮬레이터 (Platform Labor Policy Simulator)
+  ---------------------------------------------------------------
+  사회과학·정치외교 탐구 프로젝트용 정책 시뮬레이션 웹앱
+  
+  [파일 구성]
+   - index.html : 화면 구조(HTML 마크업)
+   - style.css  : 디자인/레이아웃(CSS)
+   - script.js  : 정책 모델링 로직 및 인터랙션(JavaScript)
+  
+  [수정 안내 - 고등학생용]
+   * 정책의 영향 계수를 바꾸고 싶으면 script.js의 POLICIES 부분을 수정하세요.
+   * 색상/폰트를 바꾸고 싶으면 style.css 상단의 :root 변수를 수정하세요.
+   * 통계 숫자를 바꾸고 싶으면 아래 data-* 속성 또는 script.js를 수정하세요.
+=====================================================================
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>플랫폼 노동 정책 시뮬레이터 | Policy Lab</title>
+
+  <!-- 구글 폰트: 본문(Noto Sans KR) + 영문 디스플레이(Space Grotesk 대신 차별화된 조합) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wght@600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Chart.js : 막대/선/원형 그래프 라이브러리 (CDN, 서버 불필요) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- 배경 장식: 격자 패턴 + 노이즈 (CSS에서 처리) -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       상단 헤더 / 네비게이션
+  ============================================================= -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo-mark">PL</div>
+      <div class="logo-text">
+        <span class="logo-title">PLATFORM LABOR <em>POLICY LAB</em></span>
+        <span class="logo-sub">플랫폼 노동 정책 시뮬레이터 · 사회과학 탐구 프로젝트</span>
+      </div>
+    </div>
+    <nav class="topnav" id="topnav">
+      <button class="nav-btn active" data-view="intro">개요</button>
+      <button class="nav-btn" data-view="lab">정책 실험실</button>
+      <button class="nav-btn" data-view="study">탐구 의의</button>
+      <span class="nav-status" id="navStatus">대기 중</span>
+    </nav>
+  </header>
+
+  <!-- 메인 컨테이너: 화면(view)을 전환하며 사용 -->
+  <main class="container">
+
+    <!-- ============================================================
+         [VIEW 1] 시작 화면 / 문제 소개
+    ============================================================= -->
+    <section class="view view-intro active" id="view-intro">
+      <div class="hero">
+        <div class="hero-tag">SOCIAL SCIENCE SIMULATION · v1.0</div>
+        <h1 class="hero-title">
+          정책이 바뀌면<br />
+          <span class="accent">사회는 어떻게 반응할까?</span>
+        </h1>
+        <p class="hero-desc">
+          배달, 대리운전, 가사, 콘텐츠 노동까지 — 플랫폼 노동은 빠르게 확산되고 있지만
+          기존의 노동법·사회보험 체계는 이를 충분히 담지 못합니다.
+          이 시뮬레이터는 <strong>정부 정책의 선택</strong>이
+          <strong>노동자·기업·소비자·정부</strong>에게 어떤 변화를 일으키는지
+          데이터 기반으로 실험하는 사회과학 탐구 도구입니다.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" id="startBtn">
+            정책 시뮬레이션 시작 <span class="arrow">→</span>
+          </button>
+          <button class="btn btn-ghost btn-lg" data-view="study">탐구 배경 먼저 보기</button>
+        </div>
+      </div>
+
+      <!-- 핵심 통계 카드: 플랫폼 노동 현황 -->
+      <div class="stat-section">
+        <h2 class="section-label">현황 데이터 · KEY INDICATORS</h2>
+        <div class="stat-grid">
+          <!-- 각 카드의 data-target 값까지 숫자가 카운트업 애니메이션으로 올라감 -->
+          <div class="stat-card">
+            <div class="stat-icon">📈</div>
+            <div class="stat-num"><span class="count" data-target="38" data-suffix="%">0</span></div>
+            <div class="stat-name">배달 노동자 연 증가율</div>
+            <div class="stat-note">최근 수년간 가파른 성장세 (예시 데이터)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🧑‍💻</div>
+            <div class="stat-num"><span class="count" data-target="8.5" data-suffix="%" data-decimal="1">0</span></div>
+            <div class="stat-name">전체 취업자 중 플랫폼 노동 비중</div>
+            <div class="stat-note">비정형 노동 형태 확대</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-num"><span class="count" data-target="11.2" data-suffix="h" data-decimal="1">0</span></div>
+            <div class="stat-name">평균 일일 노동시간</div>
+            <div class="stat-note">소득을 위한 장시간 노동 경향</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🛡️</div>
+            <div class="stat-num"><span class="count" data-target="42" data-suffix="%">0</span></div>
+            <div class="stat-name">사회보험 가입률</div>
+            <div class="stat-note">사각지대 존재 (예시 데이터)</div>
+          </div>
+        </div>
+        <p class="data-disclaimer">
+          ※ 위 수치는 탐구용으로 단순화한 <strong>예시 데이터</strong>입니다.
+          실제 보고서 작성 시 통계청·고용노동부·한국노동연구원 등 공신력 있는 출처로 교체하세요.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         [VIEW 2] 정책 실험실 (핵심 화면)
+    ============================================================= -->
+    <section class="view view-lab" id="view-lab">
+
+      <!-- 시나리오 프리셋 -->
+      <div class="lab-head">
+        <div>
+          <h2 class="view-title">정책 실험실 <span class="mono">/ POLICY LAB</span></h2>
+          <p class="view-sub">정책을 켜고 강도를 조절하면, 8개 사회 지표가 실시간으로 변합니다.</p>
+        </div>
+        <div class="preset-box">
+          <span class="preset-label">시나리오 프리셋</span>
+          <div class="preset-btns">
+            <button class="preset-btn" data-preset="worker">노동자 중심</button>
+            <button class="preset-btn" data-preset="company">기업 중심</button>
+            <button class="preset-btn" data-preset="balanced">균형형</button>
+            <button class="preset-btn preset-reset" data-preset="reset">초기화</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 좌: 정책 패널 / 우: 결과 대시보드 (반응형으로 한 줄→두 줄) -->
+      <div class="lab-layout">
+
+        <!-- ----- 좌측: 정책 선택 패널 ----- -->
+        <div class="policy-panel">
+          <div class="panel-title">
+            <span>정책 설계</span>
+            <span class="panel-hint">ON/OFF · 강도 1~5</span>
+          </div>
+          <!-- 정책 카드들이 script.js에서 자동 생성됩니다 -->
+          <div id="policyList" class="policy-list"></div>
+        </div>
+
+        <!-- ----- 우측: 결과 대시보드 ----- -->
+        <div class="result-panel">
+
+          <!-- 8개 핵심 지표 게이지 -->
+          <div class="panel-title">
+            <span>사회 영향 지표</span>
+            <span class="panel-hint">정책 적용 후 변화</span>
+          </div>
+          <div id="metricGrid" class="metric-grid"></div>
+
+          <!-- 그래프 영역 -->
+          <div class="chart-zone">
+            <div class="chart-card">
+              <div class="chart-card-head">
+                <h3>적용 전 / 후 비교</h3>
+                <span class="mono">BAR</span>
+              </div>
+              <canvas id="barChart"></canvas>
+            </div>
+            <div class="chart-row">
+              <div class="chart-card">
+                <div class="chart-card-head">
+                  <h3>이해관계자 균형</h3>
+                  <span class="mono">RADAR</span>
+                </div>
+                <canvas id="radarChart"></canvas>
+              </div>
+              <div class="chart-card">
+                <div class="chart-card-head">
+                  <h3>지표 누적 추이</h3>
+                  <span class="mono">LINE</span>
+                </div>
+                <canvas id="lineChart"></canvas>
+              </div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-card-head">
+                <h3>사회적 비용·편익 구성</h3>
+                <span class="mono">DOUGHNUT</span>
+              </div>
+              <div class="doughnut-wrap">
+                <canvas id="doughnutChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI 정책 분석 -->
+      <div class="analysis-section">
+        <div class="analysis-head">
+          <div>
+            <h2 class="view-title">정책 분석 <span class="mono">/ POLICY ANALYSIS</span></h2>
+            <p class="view-sub">현재 정책 조합을 평가하고 장단점·부작용·균형 방향을 제안합니다.</p>
+          </div>
+          <button class="btn btn-primary" id="analyzeBtn">⚙ 정책 분석 실행</button>
+        </div>
+        <div id="analysisResult" class="analysis-result">
+          <div class="analysis-empty">정책을 선택한 뒤 <strong>‘정책 분석 실행’</strong>을 눌러보세요.</div>
+        </div>
+      </div>
+
+      <!-- 사회 반응 시뮬레이션 -->
+      <div class="reaction-section">
+        <h2 class="view-title">사회 반응 시뮬레이션 <span class="mono">/ STAKEHOLDER REACTION</span></h2>
+        <p class="view-sub">정책 결과에 따라 각 주체가 보일 법한 반응을 보여줍니다.</p>
+        <div id="reactionGrid" class="reaction-grid"></div>
+      </div>
+
+      <!-- 탐구 기록(메모) -->
+      <div class="memo-section">
+        <h2 class="view-title">탐구 기록 <span class="mono">/ RESEARCH LOG</span></h2>
+        <p class="view-sub">실험 결과와 느낀 점을 기록하고, 텍스트로 내보내 보고서에 활용하세요.</p>
+        <div class="memo-box">
+          <div class="memo-fields">
+            <label>
+              <span>선택한 정책 요약</span>
+              <textarea id="memoPolicy" rows="2" placeholder="예: 산재보험 의무화(강도 4) + 알고리즘 투명성(강도 3) ..."></textarea>
+            </label>
+            <label>
+              <span>결과 요약</span>
+              <textarea id="memoResult" rows="2" placeholder="예: 노동자 만족도와 사회 안정성은 올랐지만 기업 수익이 하락 ..."></textarea>
+            </label>
+            <label>
+              <span>나의 해석 / 느낀 점</span>
+              <textarea id="memoThought" rows="3" placeholder="예: 안전망 강화는 비용을 수반하므로 재원 마련 방안이 함께 필요하다고 느꼈다 ..."></textarea>
+            </label>
+          </div>
+          <div class="memo-actions">
+            <button class="btn btn-soft" id="memoAutoFill">현재 결과 자동 채우기</button>
+            <button class="btn btn-primary" id="memoSave">기록 저장</button>
+            <button class="btn btn-ghost" id="memoExport">텍스트로 내보내기</button>
+          </div>
+          <div id="memoList" class="memo-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         [VIEW 3] 탐구 의의 페이지
+    ============================================================= -->
+    <section class="view view-study" id="view-study">
+      <h2 class="view-title">탐구의 배경과 의의 <span class="mono">/ RESEARCH CONTEXT</span></h2>
+      <p class="view-sub">이 시뮬레이션이 다루는 사회 문제의 핵심 개념을 정리합니다.</p>
+
+      <div class="study-grid">
+        <article class="study-card">
+          <div class="study-num">01</div>
+          <h3>플랫폼 노동의 특징</h3>
+          <p>
+            앱·웹 플랫폼이 일감을 중개하고, 노동자는 ‘건당(per-task)’으로 보상을 받습니다.
+            출퇴근·근무지가 유연한 대신, 소득이 불안정하고 노동자/자영업자의 경계가 모호합니다.
+          </p>
+        </article>
+        <article class="study-card">
+          <div class="study-num">02</div>
+          <h3>디지털 노동 문제</h3>
+          <p>
+            건당 보상 구조는 ‘더 오래, 더 빨리’ 일하도록 유도합니다. 휴식·안전이 후순위가 되기 쉽고,
+            플랫폼 간 경쟁은 수수료·단가 인하 압력으로 이어질 수 있습니다.
+          </p>
+        </article>
+        <article class="study-card">
+          <div class="study-num">03</div>
+          <h3>사회 안전망의 사각지대</h3>
+          <p>
+            전통적 사회보험(고용·산재·건강·국민연금)은 ‘근로자’를 전제로 설계됐습니다.
+            특수형태근로·자영업 성격이 섞인 플랫폼 노동은 가입 사각지대에 놓이기 쉽습니다.
+          </p>
+        </article>
+        <article class="study-card">
+          <div class="study-num">04</div>
+          <h3>알고리즘에 의한 노동 통제</h3>
+          <p>
+            배차·평점·노출 순위를 알고리즘이 결정합니다. 기준이 불투명하면 노동자는
+            ‘보이지 않는 관리자’에게 통제받으면서도 이의제기가 어려운 상황에 놓입니다.
+          </p>
+        </article>
+        <article class="study-card">
+          <div class="study-num">05</div>
+          <h3>미래 노동시장의 변화</h3>
+          <p>
+            자동화·AI 확산으로 일의 형태는 더 잘게 쪼개질 전망입니다. ‘고용’이 아닌 ‘과업’ 중심
+            노동이 늘어날수록, 새로운 사회계약과 안전망 설계가 필요해집니다.
+          </p>
+        </article>
+        <article class="study-card study-card-accent">
+          <div class="study-num">06</div>
+          <h3>탐구 질문</h3>
+          <p>
+            “노동자 보호와 산업 활력, 소비자 편익은 동시에 달성될 수 있는가?
+            그렇지 않다면 사회는 무엇을 우선해야 하는가?”
+            — 이 시뮬레이터로 가설을 세우고 검증해 보세요.
+          </p>
+        </article>
+      </div>
+
+      <div class="study-cta">
+        <button class="btn btn-primary btn-lg" data-view="lab">실험실로 이동 →</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <span>플랫폼 노동 정책 시뮬레이터 · 고등학교 사회과학 탐구 프로젝트</span>
+    <span class="mono">데이터는 탐구용 예시값 · 정책 모델은 단순화된 가정 기반</span>
+  </footer>
+
+  <!-- 토스트 알림 -->
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
