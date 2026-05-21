@@ -229,7 +229,7 @@ function renderPolicyCards() {
   const list = document.getElementById("policyList");
   list.innerHTML = "";
 
-  POLICIES.forEach((p) => {
+  POLICIES.forEach((p, idx) => {
     const level = state[p.id];
     const card = document.createElement("div");
     card.className = "policy-card" + (level > 0 ? " on" : "");
@@ -238,7 +238,7 @@ function renderPolicyCards() {
     // 카드 내부 HTML (정책명/토글/강도 슬라이더/상세설명)
     card.innerHTML = `
       <div class="policy-card-top">
-        <span class="policy-emoji">${p.emoji}</span>
+        <span class="policy-emoji">${String(idx + 1).padStart(2, "0")}</span>
         <div class="policy-info">
           <div class="policy-name">${p.name}</div>
           <div class="policy-tagline">${p.tagline}</div>
@@ -352,8 +352,8 @@ function renderMetrics(values) {
 // 차트 공통 색/옵션 (Chart.js가 로드된 경우에만 전역 기본값 설정)
 const CHART_FONT = { family: "'IBM Plex Mono', monospace", size: 11 };
 if (typeof Chart !== "undefined") {
-  Chart.defaults.color = "#8595b0";
-  Chart.defaults.borderColor = "#26334a";
+  Chart.defaults.color = "#5c616b";
+  Chart.defaults.borderColor = "#e3e1d9";
   Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
 }
 
@@ -386,8 +386,8 @@ function renderCharts(values) {
     data: {
       labels,
       datasets: [
-        { label: "적용 전", data: beforeData, backgroundColor: "rgba(133,149,176,0.45)", borderRadius: 4 },
-        { label: "적용 후", data: afterData, backgroundColor: "rgba(159,232,112,0.85)", borderRadius: 4 },
+        { label: "적용 전", data: beforeData, backgroundColor: "rgba(150,154,163,0.30)", borderRadius: 4 },
+        { label: "적용 후", data: afterData, backgroundColor: "rgba(22,24,29,0.85)", borderRadius: 4 },
       ],
     },
     options: baseBarOptions(),
@@ -404,10 +404,10 @@ function renderCharts(values) {
       datasets: [{
         label: "현재 정책",
         data: stakeholder,
-        backgroundColor: "rgba(79,209,217,0.18)",
-        borderColor: "#4fd1d9",
-        borderWidth: 2,
-        pointBackgroundColor: "#9fe870",
+        backgroundColor: "rgba(29,58,110,0.12)",
+        borderColor: "#1d3a6e",
+        borderWidth: 1.5,
+        pointBackgroundColor: "#1d3a6e",
       }],
     },
     options: {
@@ -417,9 +417,9 @@ function renderCharts(values) {
         r: {
           min: 0, max: 100,
           ticks: { display: false, stepSize: 25 },
-          grid: { color: "#26334a" },
-          angleLines: { color: "#26334a" },
-          pointLabels: { font: { size: 12 }, color: "#c2cde0" },
+          grid: { color: "#e3e1d9" },
+          angleLines: { color: "#e3e1d9" },
+          pointLabels: { font: { size: 12 }, color: "#2c2f36" },
         },
       },
     },
@@ -434,19 +434,19 @@ function renderCharts(values) {
       datasets: [{
         label: "사회 안정성",
         data: lineHistory,
-        borderColor: "#9fe870",
-        backgroundColor: "rgba(159,232,112,0.12)",
+        borderColor: "#16181d",
+        backgroundColor: "rgba(22,24,29,0.06)",
         fill: true,
         tension: 0.35,
-        pointRadius: 3,
-        pointBackgroundColor: "#9fe870",
+        pointRadius: 2.5,
+        pointBackgroundColor: "#16181d",
       }],
     },
     options: {
       responsive: true,
       plugins: { legend: { display: false } },
       scales: {
-        y: { min: 0, max: 100, grid: { color: "#1c2636" } },
+        y: { min: 0, max: 100, grid: { color: "#efede6" } },
         x: { grid: { display: false } },
       },
     },
@@ -464,8 +464,8 @@ function renderCharts(values) {
       labels: ["사회적 편익", "사회적 비용", "기업 수익"],
       datasets: [{
         data: [benefit, cost, firm],
-        backgroundColor: ["#9fe870", "#ff6b6b", "#4fd1d9"],
-        borderColor: "#141b27",
+        backgroundColor: ["#2f6b4f", "#a23b35", "#1d3a6e"],
+        borderColor: "#fbfaf7",
         borderWidth: 3,
       }],
     },
@@ -488,7 +488,7 @@ function baseBarOptions() {
       tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y}` } },
     },
     scales: {
-      y: { min: 0, max: 100, grid: { color: "#1c2636" }, ticks: { stepSize: 25 } },
+      y: { min: 0, max: 100, grid: { color: "#efede6" }, ticks: { stepSize: 25 } },
       x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 30 } },
     },
   };
@@ -631,10 +631,10 @@ function renderReactions(v) {
     : { mood: "neutral", txt: "정책의 명암을 균형 있게 다룹니다." };
 
   const data = [
-    { emoji: "🧑‍🤝‍🧑", who: "시민·소비자", ...citizen },
-    { emoji: "🏢", who: "플랫폼 기업", ...firm },
-    { emoji: "✊", who: "노동조합", ...union },
-    { emoji: "📰", who: "언론", ...media },
+    { emoji: "시민", who: "시민·소비자", ...citizen },
+    { emoji: "기업", who: "플랫폼 기업", ...firm },
+    { emoji: "노조", who: "노동조합", ...union },
+    { emoji: "언론", who: "언론", ...media },
   ];
 
   const moodLabel = { positive: "긍정적", negative: "부정적", mixed: "복합적", neutral: "중립적" };
