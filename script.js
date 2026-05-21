@@ -352,8 +352,8 @@ function renderMetrics(values) {
 // 차트 공통 색/옵션 (Chart.js가 로드된 경우에만 전역 기본값 설정)
 const CHART_FONT = { family: "'IBM Plex Mono', monospace", size: 11 };
 if (typeof Chart !== "undefined") {
-  Chart.defaults.color = "#5c616b";
-  Chart.defaults.borderColor = "#e3e1d9";
+  Chart.defaults.color = "#8a8580";
+  Chart.defaults.borderColor = "#d8d2c4";
   Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
 }
 
@@ -386,8 +386,8 @@ function renderCharts(values) {
     data: {
       labels,
       datasets: [
-        { label: "적용 전", data: beforeData, backgroundColor: "rgba(150,154,163,0.30)", borderRadius: 4 },
-        { label: "적용 후", data: afterData, backgroundColor: "rgba(22,24,29,0.85)", borderRadius: 4 },
+        { label: "적용 전", data: beforeData, backgroundColor: "rgba(138,133,128,0.30)", borderRadius: 4 },
+        { label: "적용 후", data: afterData, backgroundColor: "rgba(139,58,58,0.82)", borderRadius: 4 },
       ],
     },
     options: baseBarOptions(),
@@ -404,10 +404,10 @@ function renderCharts(values) {
       datasets: [{
         label: "현재 정책",
         data: stakeholder,
-        backgroundColor: "rgba(29,58,110,0.12)",
-        borderColor: "#1d3a6e",
+        backgroundColor: "rgba(139,58,58,0.12)",
+        borderColor: "#8b3a3a",
         borderWidth: 1.5,
-        pointBackgroundColor: "#1d3a6e",
+        pointBackgroundColor: "#8b3a3a",
       }],
     },
     options: {
@@ -417,9 +417,9 @@ function renderCharts(values) {
         r: {
           min: 0, max: 100,
           ticks: { display: false, stepSize: 25 },
-          grid: { color: "#e3e1d9" },
-          angleLines: { color: "#e3e1d9" },
-          pointLabels: { font: { size: 12 }, color: "#2c2f36" },
+          grid: { color: "#d8d2c4" },
+          angleLines: { color: "#d8d2c4" },
+          pointLabels: { font: { size: 12 }, color: "#4a4a4a" },
         },
       },
     },
@@ -434,19 +434,19 @@ function renderCharts(values) {
       datasets: [{
         label: "사회 안정성",
         data: lineHistory,
-        borderColor: "#16181d",
-        backgroundColor: "rgba(22,24,29,0.06)",
+        borderColor: "#8b3a3a",
+        backgroundColor: "rgba(139,58,58,0.08)",
         fill: true,
         tension: 0.35,
         pointRadius: 2.5,
-        pointBackgroundColor: "#16181d",
+        pointBackgroundColor: "#8b3a3a",
       }],
     },
     options: {
       responsive: true,
       plugins: { legend: { display: false } },
       scales: {
-        y: { min: 0, max: 100, grid: { color: "#efede6" } },
+        y: { min: 0, max: 100, grid: { color: "#e6e0d4" } },
         x: { grid: { display: false } },
       },
     },
@@ -464,8 +464,8 @@ function renderCharts(values) {
       labels: ["사회적 편익", "사회적 비용", "기업 수익"],
       datasets: [{
         data: [benefit, cost, firm],
-        backgroundColor: ["#2f6b4f", "#a23b35", "#1d3a6e"],
-        borderColor: "#fbfaf7",
+        backgroundColor: ["#c8364b", "#d4a017", "#2c3e7e"],
+        borderColor: "#ffffff",
         borderWidth: 3,
       }],
     },
@@ -488,7 +488,7 @@ function baseBarOptions() {
       tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y}` } },
     },
     scales: {
-      y: { min: 0, max: 100, grid: { color: "#efede6" }, ticks: { stepSize: 25 } },
+      y: { min: 0, max: 100, grid: { color: "#e6e0d4" }, ticks: { stepSize: 25 } },
       x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 30 } },
     },
   };
